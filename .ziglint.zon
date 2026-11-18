@@ -1,0 +1,8 @@
+.{
+    .paths = .{
+        "build.zig",
+        "src/root.zig",
+        "test/client.zig",
+        "docs/examples",
+    },
+}
