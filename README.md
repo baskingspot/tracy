@@ -30,7 +30,7 @@ fn handle(request: *const Request) !void {
 - [Messages](https://baskingspot.dev/tracy/#messages): `log` at six severities, `message` for the common case, `appInfo`, and `setThreadName`.
 - [Plots](https://baskingspot.dev/tracy/#plots): `plotConfig` declares a series, and `plotInt` and `plotFloat` add points.
 - [Frames](https://baskingspot.dev/tracy/#frames): `frameMark` per tick, `frameMarkNamed` for a stream of its own, and `namedFrame` around a block.
-- [The build](https://baskingspot.dev/tracy/#the-build): `enable`, `enable-allocation`, `enable-callstack`, `enable-on-demand`, and `only-localhost`, and what each costs.
+- [The build](https://baskingspot.dev/tracy/#the-build): `enable`, `enable_allocation`, `enable_callstack`, `enable_on_demand`, and `only_localhost`, and what each costs.
 
 Not implemented:
 

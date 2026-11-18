@@ -1,10 +1,11 @@
 const std = @import("std");
 
 /// What a consumer sets with `b.dependency("tracy", .{ ... })`, or on the
-/// command line as `-Denable`, `-Denable-allocation`, and so on.
+/// command line as `-Denable`, `-Denable_allocation`, and so on. The field
+/// name is the option name in both places.
 pub const Options = struct {
     /// Compile the Tracy client in and emit events. When false, every public
-    /// function in the module is a no-op and the client is never fetched.
+    /// function in the module is a no-op and the client is never compiled.
     enable: bool = false,
     /// Report memory through `TracyAllocator`. Defaults to `enable`.
     enable_allocation: bool = false,
@@ -25,12 +26,12 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     const enable = b.option(bool, "enable", "Compile the Tracy client in and emit events") orelse false;
-    const enable_allocation = b.option(bool, "enable-allocation", "Report memory through TracyAllocator") orelse enable;
-    const enable_callstack = b.option(bool, "enable-callstack", "Collect a callstack with every event") orelse enable;
-    const enable_on_demand = b.option(bool, "enable-on-demand", "Emit only while a profiler is connected") orelse false;
+    const enable_allocation = b.option(bool, "enable_allocation", "Report memory through TracyAllocator") orelse enable;
+    const enable_callstack = b.option(bool, "enable_callstack", "Collect a callstack with every event") orelse enable;
+    const enable_on_demand = b.option(bool, "enable_on_demand", "Emit only while a profiler is connected") orelse false;
     const only_localhost = b.option(
         bool,
-        "only-localhost",
+        "only_localhost",
         "Bind the listener to loopback and stop announcing it",
     ) orelse false;
     const mod = module(b, "tracy", target, optimize, .{

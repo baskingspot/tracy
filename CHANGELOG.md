@@ -23,6 +23,6 @@ All notable changes to tracy are recorded here. The format follows
   the `number`, `memory`, `percentage`, and `watt` units.
 - `frameMark`, `frameMarkNamed`, `namedFrame`, and `Frame`: a point per frame,
   or a block with an `end`.
-- The build options `enable-allocation` and `enable-callstack`, both following
-  `enable`, plus `enable-on-demand` and `only-localhost` for the client's
+- The build options `enable_allocation` and `enable_callstack`, both following
+  `enable`, plus `enable_on_demand` and `only_localhost` for the client's
   connection behavior.

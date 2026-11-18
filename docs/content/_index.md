@@ -65,8 +65,8 @@ Pass it in `b.dependency`, as above, or from the command line for a whole build:
 zig build -Denable=true
 ```
 
-`enable-allocation` and `enable-callstack` follow `enable`.
-`enable-on-demand` and `only-localhost` default to false. [The build](#the-build)
+`enable_allocation` and `enable_callstack` follow `enable`.
+`enable_on_demand` and `only_localhost` default to false. [The build](#the-build)
 has the table. Tests always run with the no-op path: `enable` is forced false under
 `zig build test`, so a profiling build still has a test suite that verifies what
 the release build does.
@@ -112,7 +112,7 @@ method on it does nothing. The compiler inlines all of it away, including the
 call, so a release build carries no zone code.
 
 With `enable` true, one zone is a timestamp, a queue write, and a source
-location the compiler stores once per call site. `enable-callstack` adds a stack
+location the compiler stores once per call site. `enable_callstack` adds a stack
 walk per event, which is why it is worth turning off for steady-state profiling.
 
 # Memory
@@ -204,21 +204,22 @@ interleave and the frame times mean nothing.
 | Option              | Default  | What it does                                                           |
 | ------------------- | -------- | ---------------------------------------------------------------------- |
 | `enable`            | `false`  | Compiles the client in. With it false, every call is a no-op.          |
-| `enable-allocation` | `enable` | Reports through `TracyAllocator`.                                      |
-| `enable-callstack`  | `enable` | Collects a callstack with every zone, message, and allocation.         |
-| `enable-on-demand`  | `false`  | Emits only while a profiler is connected.                              |
-| `only-localhost`    | `false`  | Binds the listener to loopback and stops announcing it on the network. |
+| `enable_allocation` | `enable` | Reports through `TracyAllocator`.                                      |
+| `enable_callstack`  | `enable` | Collects a callstack with every zone, message, and allocation.         |
+| `enable_on_demand`  | `false`  | Emits only while a profiler is connected.                              |
+| `only_localhost`    | `false`  | Binds the listener to loopback and stops announcing it on the network. |
 
-Set them in `b.dependency`, or on the command line as `-Dname=true`. A value
+Set them in `b.dependency`, or on the command line as `-Denable_allocation=true`.
+The field name is the option name in both places. A value
 given to `b.dependency` wins for that module, so two modules in one build can
 disagree, which is the point of building the profiler into one of them.
 
-`enable-on-demand` also changes the client's C API: the zone context carries a
+`enable_on_demand` also changes the client's C API: the zone context carries a
 connection id when the client is built that way. The module reads the same
 option, so the Zig struct and the C struct match. Do not set `TRACY_ON_DEMAND`
 yourself.
 
-`only-localhost` sets `TRACY_ONLY_LOCALHOST` and `TRACY_NO_BROADCAST`. Use it
+`only_localhost` sets `TRACY_ONLY_LOCALHOST` and `TRACY_NO_BROADCAST`. Use it
 for a program on a server, where the profiler reaches it through a port forward
 and nothing should be listening on the network.
 
