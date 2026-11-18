@@ -9,8 +9,8 @@ All notable changes to tracy are recorded here. The format follows
 
 - `tracy` as a package: `b.dependency("tracy", .{ .enable = true })` compiles
   the Tracy C client into the module, and `enable = false` makes every
-  function an inline no-op. The client is a lazy dependency, so a build without
-  `enable` never fetches it.
+  function an inline no-op. The client is vendored under `vendor/tracy`, so a
+  build needs no download.
 - `trace(@src())`, `traceNamed`, and `Ctx`: zones named after their function,
   with `addText`, `setName`, `setColor`, `setValue`, and `end`.
 - `tracyAllocator` and `TracyAllocator("name")`: an allocator wrapper that

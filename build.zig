@@ -1,9 +1,5 @@
 const std = @import("std");
 
-/// The wolfpld/tracy tag that `build.zig.zon` fetches and this build compiles
-/// the client from.
-const client_version = "0.15.0";
-
 /// What a consumer sets with `b.dependency("tracy", .{ ... })`, or on the
 /// command line as `-Denable`, `-Denable-allocation`, and so on.
 pub const Options = struct {
@@ -128,14 +124,6 @@ fn module(
     const mod = if (name) |n| b.addModule(n, config) else b.createModule(config);
     if (!options.enable) return mod;
 
-    // Fetched only when the client is wanted. On the first configure pass it
-    // is not fetched yet, `dependencyLazy` reports that it is needed, and the
-    // build runner fetches it and reruns this script.
-    const client = b.dependencyLazy("tracy_client", .{
-        .target = target,
-        .optimize = optimize,
-    }) catch return mod;
-
     mod.addCMacro("TRACY_ENABLE", "1");
     if (options.only_localhost) {
         mod.addCMacro("TRACY_ONLY_LOCALHOST", "1");
@@ -143,14 +131,12 @@ fn module(
     }
     if (options.enable_on_demand) mod.addCMacro("TRACY_ON_DEMAND", "1");
 
-    // The archive URL in build.zig.zon carries the tag, and GitHub keeps the
-    // tag as the top-level directory of the archive. Bump both together: the
-    // `client` step fails when they disagree.
-    const root = b.fmt("tracy-{s}", .{client_version});
-    mod.addIncludePath(client.path(root));
-    mod.addIncludePath(client.path(b.fmt("{s}/public", .{root})));
+    // The client is vendored under vendor/tracy at the tag THIRD_PARTY.md
+    // records. TracyClient.cpp includes from both the root and public/.
+    mod.addIncludePath(b.path("vendor/tracy"));
+    mod.addIncludePath(b.path("vendor/tracy/public"));
     mod.addCSourceFile(.{
-        .file = client.path(b.fmt("{s}/public/TracyClient.cpp", .{root})),
+        .file = b.path("vendor/tracy/public/TracyClient.cpp"),
     });
 
     return mod;

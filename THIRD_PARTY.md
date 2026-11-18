@@ -39,15 +39,25 @@ ziglint rule that fires on the vendored shape names the line it exempts.
 ## Tracy
 
 - Upstream: <https://github.com/wolfpld/tracy>
-- Pinned tag: v0.15.0, in `build.zig.zon`
-- License: BSD 3-Clause, in the fetched package's `LICENSE`
+- Vendored tag: v0.15.0
+- License: BSD 3-Clause, in `vendor/tracy/LICENSE`, kept verbatim
 
-The C client is a dependency, not vendored code. A build with `enable` false
-never fetches it. When enabled, `build.zig` compiles `public/TracyClient.cpp`
-into the module and adds the macros that select the client's behavior. The
-package's release tarball carries none of it.
+`vendor/tracy/public/` is a copy of the upstream `public/` directory, 88 files,
+and nothing else. A build with `enable` false never compiles it. When enabled,
+`build.zig` compiles `vendor/tracy/public/TracyClient.cpp` into the module and
+adds the macros that select the client's behavior.
 
-The Zig module talks to the client only through the `___tracy_*` functions in
-`public/tracy/TracyC.h`. Those names, their argument lists, and the
-`___tracy_c_zone_context` layout are the contract between the two, so a client
-upgrade means checking that header before the tag moves in `build.zig.zon`.
+To move the vendored client to a new tag:
+
+1. Replace `vendor/tracy/public/` and `vendor/tracy/LICENSE` from the tag's
+   archive.
+2. Read `public/tracy/TracyC.h` and compare the `___tracy_*` declarations and
+   `___tracy_c_zone_context` with what `src/root.zig` declares. A changed
+   argument list or struct layout is a Zig change, not a copy.
+3. Run `just client`. It compiles the client and emits every kind of event, so
+   a link error or an ABI mismatch fails here.
+4. Record the new tag here and in the CHANGELOG.
+
+The Zig module talks to the client only through the functions in
+`public/tracy/TracyC.h`. Those names, their argument lists, and the zone
+context's layout are the contract between the two.

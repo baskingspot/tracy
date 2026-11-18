@@ -224,10 +224,10 @@ and nothing should be listening on the network.
 
 ## The client
 
-The C client is a dependency of this package, pinned to wolfpld/tracy v0.15.0 in
-`build.zig.zon`. It is lazy: a build with `enable` false never fetches it. The
-profiler on your machine must be the same version family as the client, so
-upgrade both together.
+The C client is vendored in `vendor/tracy`, copied from wolfpld/tracy v0.15.0,
+with its license. A build with `enable` false never compiles it, and no build
+downloads it. The profiler on your machine must be the same version family as
+the client, so install the Tracy GUI that matches.
 
 `just client` builds a program against the client with the client on, and runs
 it. CI runs it too, so a change to the client wiring fails here and not in a

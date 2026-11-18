@@ -76,7 +76,7 @@ just ci
 
 ## License
 
-MIT. See [`LICENSE`](LICENSE). `src/root.zig` is adapted from the Zig compiler and ZLS; [`LICENSE-ZIG`](LICENSE-ZIG) reproduces their MIT terms and [`THIRD_PARTY.md`](THIRD_PARTY.md) lists what changed. The C client is fetched from [wolfpld/tracy](https://github.com/wolfpld/tracy) at build time, not vendored here; [`THIRD_PARTY.md`](THIRD_PARTY.md) states its license. The logo files in `docs/static/` are baskingspot marks and are not covered by the MIT license. See [`docs/static/LICENSE`](docs/static/LICENSE).
+MIT. See [`LICENSE`](LICENSE). `src/root.zig` is adapted from the Zig compiler and ZLS; [`LICENSE-ZIG`](LICENSE-ZIG) reproduces their MIT terms and [`THIRD_PARTY.md`](THIRD_PARTY.md) lists what changed. The C client is vendored from [wolfpld/tracy](https://github.com/wolfpld/tracy) under `vendor/tracy`, at the tag `THIRD_PARTY.md` records, with its BSD 3-Clause license beside it. The logo files in `docs/static/` are baskingspot marks and are not covered by the MIT license. See [`docs/static/LICENSE`](docs/static/LICENSE).
 
 ## How it's made
 

@@ -6,13 +6,6 @@
     // supported use case.
     .minimum_zig_version = "0.17.0",
     .dependencies = .{
-        // The upstream C client, compiled into the module only when `enable`
-        // is true. Lazy, so the no-op build never fetches 30 MB of C++.
-        .tracy_client = .{
-            .url = "https://github.com/wolfpld/tracy/archive/refs/tags/v0.15.0.tar.gz",
-            .hash = "N-V-__8AABliiwLDD6o7qG7IGWsU2X3t-cFij6YdySWKTFqn",
-            .lazy = true,
-        },
         // The test runner. Lazy: only the root build uses it, and build.zig
         // returns early for a consumer.
         .testingx = .{
@@ -21,12 +14,13 @@
             .lazy = true,
         },
     },
-    // The files a release tarball carries. The C client is not one of them: it
-    // is fetched from upstream by the consumer's build.
+    // The files a release tarball carries, the vendored C client included, so
+    // a build needs no fetch beyond the test runner.
     .paths = .{
         "build.zig",
         "build.zig.zon",
         "src",
+        "vendor",
         "LICENSE",
         "LICENSE-ZIG",
         "README.md",

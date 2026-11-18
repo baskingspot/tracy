@@ -4,7 +4,7 @@ Working notes for AI coding agents in baskingspot/tracy.
 
 ## What this is
 
-Tracy profiler bindings for Zig: zones, plots, messages, and an allocator, compiled out when disabled. The Zig half is adapted from the Zig compiler and ZLS; the C half is the upstream client, fetched and compiled only when `enable` is true.
+Tracy profiler bindings for Zig: zones, plots, messages, and an allocator, compiled out when disabled. The Zig half is adapted from the Zig compiler and ZLS; the C half is the upstream client, vendored under `vendor/tracy` and compiled only when `enable` is true.
 
 ## Environment
 
@@ -12,15 +12,24 @@ Zig 0.17, the current stable. The flake is the tool contract, from `baskingspot/
 
 `just test` runs the module's tests and the guide's examples. `src/root.zig` forces `enable` false under `builtin.is_test`, so the suite always exercises the no-op path, even in a build with `-Denable=true`.
 
-`just client` is the other half: it builds `test/client.zig` with the client compiled in and runs it. Every mistake in the C wiring so far has been a link error or an ABI mismatch that only that lane could see, so never change the options module, the macros, or an `extern` declaration without running it.
+`just client` is the other half: it builds `test/client.zig` with the client compiled in and runs it. Every mistake in the C wiring so far has been a link error or an ABI mismatch that only that lane could see.
 
 The guide is `docs/content/_index.md` on the baskingspot docs theme. `just doc` builds the site into `zig-out/site/tracy/`, `just guide` serves it with live reload, and the API reference comes from docgen over `src/root.zig`. The guide's code blocks are files in `docs/examples/`, embedded with `load_data` and compiled by `just test`.
 
-## The two places the client's version lives
+## The vendored client
 
-`build.zig.zon` fetches the client at a tag, and `client_version` at the top of `build.zig` names the directory inside that archive. Bump both in one change. The `just client` lane fails when they disagree, with a missing `TracyClient.cpp`.
+`vendor/tracy/` is a verbatim copy of the upstream `public/` directory and its
+license, at the tag `THIRD_PARTY.md` records. Do not edit a file under it. To
+move the tag, follow the procedure in `THIRD_PARTY.md` and run `THIRD_PARTY.md`'s
+step 3 before you commit.
 
-The client's C API is a compile-time contract. `public/tracy/TracyC.h` decides the argument lists of the `___tracy_*` functions and the layout of `___tracy_c_zone_context`, which changes under `TRACY_ON_DEMAND`. `THIRD_PARTY.md` lists what the module depends on. Read that header before you move the tag.
+The client's C API is a compile-time contract. `public/tracy/TracyC.h` decides
+the argument lists of the `___tracy_*` functions and the layout of
+`___tracy_c_zone_context`, which changes under `TRACY_ON_DEMAND`. Read that
+header before you move the tag.
+
+`just client` is the only lane that sees the C half. Never change the options
+module, the macros, or an `extern` declaration without running it.
 
 ## Rules
 
