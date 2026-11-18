@@ -1,6 +1,6 @@
 .{
     .name = .tracy,
-    .version = "0.0.0",
+    .version = "0.1.0",
     .fingerprint = 0x255a89ee0aa0d01a, // Changing this has security and trust implications.
     // Tracks the earliest Zig version that the package considers to be a
     // supported use case.

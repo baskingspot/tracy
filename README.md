@@ -42,7 +42,7 @@ Not implemented:
 ## Install
 
 ```sh
-zig fetch --save git+https://github.com/baskingspot/tracy
+zig fetch --save https://baskingspot.dev/tracy/v0.1.0.tar.gz
 ```
 
 Add the module in `build.zig`:

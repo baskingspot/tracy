@@ -5,6 +5,8 @@ All notable changes to tracy are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-11-18
+
 ### Added
 
 - `tracy` as a package: `b.dependency("tracy", .{ .enable = true })` compiles
